@@ -4,7 +4,6 @@
 
 
 namespace entry {
-
     // create a vector of numbers for message
     std::vector<int> input_message() {
         std::cout << "Please enter message: ";
@@ -36,7 +35,6 @@ namespace entry {
 
 
 namespace encrypt {
-
     // algorithm to encrypt message
     std::string encrypt() {
         std::vector<int> input = entry::input_message();
@@ -97,6 +95,7 @@ namespace encrypt {
     }
 };
 
+
 int main() {
     std::cout << "Would you like to encrypt or decrypt? Type E/D: ";
     std::string var_in; getline(std::cin, var_in);
@@ -116,4 +115,3 @@ int main() {
     std::cout << encoded << std::endl;
     return 0;
 }
-

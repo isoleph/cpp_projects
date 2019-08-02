@@ -4,7 +4,6 @@
 
 class tensor {
     private:
-
         // private values
         bool is_transpose = false;
         double Mag;
