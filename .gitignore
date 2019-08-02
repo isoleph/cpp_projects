@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/macOS,c++
-# Edit at https://www.gitignore.io/?templates=macOS,c++
+# Created by https://www.gitignore.io/api/macOS,c++,VisualStudioCode
+# Edit at https://www.gitignore.io/?templates=macOS,c++,VisualStudioCode
 
 ### C++ ###
 # Prerequisites
@@ -64,4 +64,15 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# End of https://www.gitignore.io/api/macOS,c++
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+# End of https://www.gitignore.io/api/macOS,c++,VisualStudioCode
