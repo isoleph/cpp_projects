@@ -7,7 +7,7 @@
 *   - Transposes                                    *
 *   - Multiplication                                *
 *   - Lorentz Boosts                                *
-*   - Magnitudes                                     *
+*   - Magnitudes                                    *
 * Author: Angel A. Valdenegro                       *
 * TODO: Implement index reassignments               *
 *****************************************************/ 
@@ -18,16 +18,16 @@
 
 class tensor {
     private: 
-        std::vector<double> vec;    // vector
-        std::vector<double> vecT;   // transpose
-        std::vector<double> current;
+        // private data types
+        std::vector<double> vec;            // vector
+        std::vector<double> vecT;           // dual w. Minkowski (-+++)
+        std::vector<double> current;        // current (dual/regular)
 
         // vector properties
         double mag;
         bool is_transpose = false;
 
     public:
-
         // constructor
         tensor(double t, double x, double y, double z) {
             try {
@@ -68,14 +68,13 @@ class tensor {
             if (is_transpose == obj.is_transpose) {
                 throw std::invalid_argument("Vectors are not multiplicable.");
             }
-
             double result = 0;
             for (int i = 0; i < 4; i++) {
                 result += current[i] * obj.current[i];
             }
             return result;
         }
-
+        // define Boosts on index with Beta value
         double Boost(int index=1, double B=0) {
             if (index == 0 || index > 3 ) {
                 throw std::invalid_argument("Invalid index.");
@@ -88,7 +87,7 @@ class tensor {
                     + current[2]*current[2] + current[3]*current[3], 0.5);
             return 0;
         }
-            
+        // print vector to console
         inline int Print() {
             if (is_transpose) {
                 printf("{%f, %f, %f, %f}<-(T)\n" , current[0], current[1], current[2], current[3]);
@@ -97,12 +96,12 @@ class tensor {
             }
             return 0;
         }
-
+        // print magnitude to console
         inline double M() {
             std::cout << mag << std::endl;
             return mag;
         }
-
+        // same as above but squared
         inline double M2() {
             double square = mag*mag;
             std::cout << square << std::endl;
@@ -111,6 +110,7 @@ class tensor {
 };
 
 
+// show examples with main
 int main() {
     std::cout << "Initializing vectors.\n" << std::endl;
     tensor one(4, 5, 6, 5); tensor two(1, 2, 3, 4);
