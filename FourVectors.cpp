@@ -1,112 +1,142 @@
-#include <cmath>
+/****************************************************
+* Name: FourVectors.cpp                             *
+* Description: C++ module for Lorentz Four Vectors  *
+*     in Physics                                    *
+* Supports:                                         *
+*   - Addition                                      *
+*   - Transposes                                    *
+*   - Multiplication                                *
+*   - Lorentz Boosts                                *
+*   - Magnitudes                                     *
+* Author: Angel A. Valdenegro                       *
+* TODO: Implement index reassignments               *
+*****************************************************/ 
+
 #include <iostream>
+#include <cmath> 
 #include <vector>
 
 class tensor {
-    private:
-        // private values
-        bool is_transpose = false;
-        double Mag;
-    public:
-        // public values
-        float ut, ux, uy, uz;
+    private: 
+        std::vector<double> vec;    // vector
+        std::vector<double> vecT;   // transpose
+        std::vector<double> current;
 
-        //*** public member functions ***//
-        // create vector with entries
-        std::vector<double> r1(double t, double x, double y, double z) {
+        // vector properties
+        double mag;
+        bool is_transpose = false;
+
+    public:
+
+        // constructor
+        tensor(double t, double x, double y, double z) {
             try {
-                Mag = pow(-t*t + x*x + y*y + z*z, 0.5);
+                mag = pow(-t*t + x*x + y*y + z*z, 0.5);
             } catch (const std::invalid_argument &ia) {
                 std::cerr << "Invalid Argument: " << ia.what() << std::endl;
             }
-            // reassign public values; make vector
-            ut = t; ux = x; uy = y; uz = z;
-            std::vector<double> v{ut, ux, uy, uz};
-            return v;
+            vec = {t, x, y, z};
+            vecT = {-t, x, y, z};
+            current = vec;
         }
-        // creates a dual vector using Minkowski metric -+++
+
+        // allow indexing
+        double& operator[](int s) {
+            return vec[s];
+        }
+        // tranpose
         std::vector<double> T() {
-            std::vector<double> v = r1(-ut, ux, uy, uz);
-            if (is_transpose) {
-                is_transpose = false;
-                return v;
-            } else {
-                is_transpose = true;
-                return v;
-            }
+            is_transpose = (is_transpose)? false : true;
+            current = (is_transpose)? vecT : vec;
+            return current;
         }
-        // print out entries in vector
-        int Print() {
-            printf("{%f, %f, %f, %f}", ut, ux, uy, uz);
-            if (is_transpose == true) {std::cout << "††";}
-            std::cout << std::endl;
-            return 0;
-        }
-        // print magnitude of vector
-        int M() {
-            printf("%f\n", Mag);
-            return 0;
-        }
-        // define boost method
-        std::vector<double> Boost(double B) {
-            ux = ux / pow(1-B*B, 0.5);
-            std::vector<double> v = r1(ut, ux, uy, uz);
-            return v;
-        }
-        // define indexing operator
-        double& operator[](int i) {
-            std::vector<double> elem{ut,ux,uy,uz};
-            return elem[i];
-        }
-        // define addition operator
-        tensor operator+ (tensor const &obj) {
+        // define vector addition operator
+        tensor operator+(tensor &obj) {
             if (is_transpose != obj.is_transpose) {
                 throw std::invalid_argument("Vectors are not addable.");
-            } 
-            tensor a;
-            a.ut = ut+ obj.ut; a.ux = ux + obj.ux;
-            a.uy = uy+ obj.uy; a.uz = uz + obj.uz;
-            return a;
-        }
-        // define multiplication operator
-        double operator* (tensor &obj) {
+            }
+            double rt = current[0] + obj[0]; 
+            double rx = current[1] + obj[1]; 
+            double ry = current[2] + obj[2]; 
+            double rz = current[3] + obj[3];
+
+            tensor result(rt, rx, ry, rz);
+            return result;
+        } 
+        // define vector multiplication operator
+        double operator*(tensor &obj) {
             if (is_transpose == obj.is_transpose) {
                 throw std::invalid_argument("Vectors are not multiplicable.");
             }
-            tensor a;
-            double multiple = (ut * obj.ut) + (ux * obj.ux) + \
-                (uy * obj.uy) + (uz * obj.uz);
-            return multiple;
+
+            double result = 0;
+            for (int i = 0; i < 4; i++) {
+                result += current[i] * obj.current[i];
+            }
+            return result;
+        }
+
+        double Boost(int index=1, double B=0) {
+            if (index == 0 || index > 3 ) {
+                throw std::invalid_argument("Invalid index.");
+            }
+            double gamma = 1/pow(1 - B*B, 0.5);
+            vec[index] = vec[index] * gamma;
+            vecT[index] = vecT[index] * gamma;
+            current[index] = current[index] * gamma;
+            mag = pow(-current[0]*current[0] + current[1]*current[1]
+                    + current[2]*current[2] + current[3]*current[3], 0.5);
+            return 0;
+        }
+            
+        inline int Print() {
+            if (is_transpose) {
+                printf("{%f, %f, %f, %f}<-(T)\n" , current[0], current[1], current[2], current[3]);
+            } else {
+                printf("{%f, %f, %f, %f}\n" , current[0], current[1], current[2], current[3]);
+            }
+            return 0;
+        }
+
+        inline double M() {
+            std::cout << mag << std::endl;
+            return mag;
+        }
+
+        inline double M2() {
+            double square = mag*mag;
+            std::cout << square << std::endl;
+            return square;
         }
 };
 
-int main() {
-    // initiate four vectors
-    tensor mu; tensor nu; tensor alpha;
-    std::vector<double> v = mu.r1(1, 2, 3, 4);
-    std::vector<double> w = nu.r1(4,3,2,1);
 
-    // assign four vectors
-    std::cout << "Assigning Vectors Mu and Nu: " << std::endl;
-    mu.Print();
-    nu.Print();
-    std::cout << std:: endl;
-    // boost example
-    std::cout << "Boosting Vector Mu:" << std::endl;
-    mu.Boost(0.9999);
-    mu.Print();
-    std::cout << std::endl;
-    // multiplcation example
-    mu.T();
-    std::cout << "Multiplying Mu by Nu:" << std::endl;
-    std::cout << mu * nu << std::endl;
-    mu.T();
-    std::cout << std::endl; 
-    // addition example
-    std::cout << "Adding Mu and Nu: " << std::endl;
-    alpha = mu + nu;
-    alpha.Print();
-    std::cout << std::endl;
-    std::cout << mu[1] << std::endl;
+int main() {
+    std::cout << "Initializing vectors.\n" << std::endl;
+    tensor one(4, 5, 6, 5); tensor two(1, 2, 3, 4);
+    std::cout << "Vector A: " << std::endl;
+    one.Print();
+    std::cout << "Vector B: " << std::endl;
+    two.Print();
+
+    std::cout << "\nTransposing Vector B: " << std::endl;
+    two.T();                                            // transpose
+    two.Print();
+    std::cout << "\nBoosting Vector B's x-coord: " << std::endl;
+    two.Boost(1, 0.99);                                 // Boost x value
+    two.Print();
+
+    // multiply
+    std::cout << "\n Multiplying A & B: " << std::endl;
+    std::cout << one*two << std::endl;      // print contraction
+
+    std::cout << "\n Transposing Vector B back:" << std::endl;
+    two.T();
+    two.Print();
+
+    // add
+    std::cout << "\n Adding A & B: " << std::endl;
+    tensor three = one + two;
+    three.Print();
     return 0;
 }

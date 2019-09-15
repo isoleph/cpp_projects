@@ -11,7 +11,7 @@ This is a repository full of random projects or ideas that I work on in C++. Her
     <img src=img/four.png width = 400>
 </div>
 
-- **vigenere.cpp**: A script that allows you to encrypt a message using the [Vigènere Cipher](https://en.wikipedia.org/wiki/Vigenère_cipher). Includes encryption and decryption.
+- **vigenere.cpp**: A script that allows you to encrypt a message using the [Vigènere Cipher](https://en.wikipedia.org/wiki/Vigenère_cipher). Includes encryption and decryption. 
 
 <div align="center">
     <img src=img/vige.png width = 400>
