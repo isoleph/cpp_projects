@@ -9,7 +9,7 @@
 *   - Lorentz Boosts                                *
 *   - Magnitudes                                    *
 * Author: Angel A. Valdenegro                       *
-* TODO: Implement index reassignments               *
+* TODO: Reimplement current with pointers           *
 *****************************************************/ 
 
 #include <iostream>
