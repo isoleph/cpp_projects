@@ -77,9 +77,6 @@ class tensor {
         // define equating two four vectors 
         inline tensor& operator= (const tensor&);
 
-        // reindexing 
-        double& operator[](int i)
-
         // define Boosts on index with Beta value
         double Boost(int index=1, double B=0) {
             if (index == 0 || index > 3 ) {
