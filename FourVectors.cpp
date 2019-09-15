@@ -41,7 +41,7 @@ class tensor {
         }
 
         // allow indexing
-        double& operator[](int s) {
+        inline double& operator[](int s) {
             return vec[s];
         }
         // tranpose
@@ -74,6 +74,12 @@ class tensor {
             }
             return result;
         }
+        // define equating two four vectors 
+        inline tensor& operator= (const tensor&);
+
+        // reindexing 
+        double& operator[](int i)
+
         // define Boosts on index with Beta value
         double Boost(int index=1, double B=0) {
             if (index == 0 || index > 3 ) {
@@ -113,7 +119,7 @@ class tensor {
 // show examples with main
 int main() {
     std::cout << "Initializing vectors.\n" << std::endl;
-    tensor one(4, 5, 6, 5); tensor two(1, 2, 3, 4);
+    tensor one(4, 5, 6, 5); tensor two = one;
     std::cout << "Vector A: " << std::endl;
     one.Print();
     std::cout << "Vector B: " << std::endl;
