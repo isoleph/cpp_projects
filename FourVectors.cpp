@@ -22,10 +22,19 @@ class tensor {
         std::vector<double> vec;            // vector
         std::vector<double> vecT;           // dual w. Minkowski (-+++)
         std::vector<double> current;        // current (dual/regular)
-
+        
         // vector properties
         double mag;
         bool is_transpose = false;
+
+        // keep elements in agreement TODO: Find a way to auto-do this
+        int update() {
+            for (int i = 1; i <=3; i++) {
+                vec[i] = current[i];
+                vecT[i] = current[i];
+            }
+            return 0;
+        }
 
     public:
         // constructor
@@ -42,16 +51,22 @@ class tensor {
 
         // allow indexing
         inline double& operator[](int s) {
-            return vec[s];
+            return current[s];
         }
-        // tranpose
+
+        // define equating two four vectors 
+        inline tensor& operator= (const tensor&);
+
+        // define tranpose
         std::vector<double> T() {
+            update();
             is_transpose = (is_transpose)? false : true;
             current = (is_transpose)? vecT : vec;
             return current;
         }
         // define vector addition operator
         tensor operator+(tensor &obj) {
+            update();
             if (is_transpose != obj.is_transpose) {
                 throw std::invalid_argument("Vectors are not addable.");
             }
@@ -65,6 +80,7 @@ class tensor {
         } 
         // define vector multiplication operator
         double operator*(tensor &obj) {
+            update();
             if (is_transpose == obj.is_transpose) {
                 throw std::invalid_argument("Vectors are not multiplicable.");
             }
@@ -74,11 +90,9 @@ class tensor {
             }
             return result;
         }
-        // define equating two four vectors 
-        inline tensor& operator= (const tensor&);
-
         // define Boosts on index with Beta value
         double Boost(int index=1, double B=0) {
+            update();
             if (index == 0 || index > 3 ) {
                 throw std::invalid_argument("Invalid index.");
             }
@@ -86,12 +100,12 @@ class tensor {
             vec[index] = vec[index] * gamma;
             vecT[index] = vecT[index] * gamma;
             current[index] = current[index] * gamma;
-            mag = pow(-current[0]*current[0] + current[1]*current[1]
-                    + current[2]*current[2] + current[3]*current[3], 0.5);
-            return 0;
+            M();
+            return current[index];
         }
         // print vector to console
         inline int Print() {
+            update();
             if (is_transpose) {
                 printf("{%f, %f, %f, %f}<-(T)\n" , current[0], current[1], current[2], current[3]);
             } else {
@@ -101,13 +115,19 @@ class tensor {
         }
         // print magnitude to console
         inline double M() {
-            std::cout << mag << std::endl;
+            update();
+            mag = pow(-current[0]*current[0] + current[1]*current[1]
+                    + current[2]*current[2] + current[3]*current[3], 0.5);
+            std::cout << "Vector Magnitude: " << mag << std::endl;
             return mag;
         }
         // same as above but squared
         inline double M2() {
+            update();
+            mag = pow(-current[0]*current[0] + current[1]*current[1]
+                    + current[2]*current[2] + current[3]*current[3], 0.5);
             double square = mag*mag;
-            std::cout << square << std::endl;
+            std::cout << "Vector Magnitude Squared: " << square << std::endl;
             return square;
         }
 };
@@ -115,30 +135,43 @@ class tensor {
 
 // show examples with main
 int main() {
-    std::cout << "Initializing vectors.\n" << std::endl;
+  
+    // initialize
     tensor one(4, 5, 6, 5); tensor two = one;
     std::cout << "Vector A: " << std::endl;
     one.Print();
     std::cout << "Vector B: " << std::endl;
     two.Print();
 
-    std::cout << "\nTransposing Vector B: " << std::endl;
+    std::cout << "------------------------" << std::endl;
+    std::cout << "Transposing Vector B: " << std::endl;
     two.T();                                            // transpose
     two.Print();
-    std::cout << "\nBoosting Vector B's x-coord: " << std::endl;
+
+    std::cout << "------------------------" << std::endl;
+    std::cout << "Boosting Vector B's x-coord: " << std::endl;
     two.Boost(1, 0.99);                                 // Boost x value
+    two.Print();
+    
+    
+    std::cout << "------------------------" << std::endl;
+    std::cout << "Reassigning Vector B's z-coord." << std::endl;
+    two[3] = 25.0;
     two.Print();
 
     // multiply
-    std::cout << "\n Multiplying A & B: " << std::endl;
+    std::cout << "------------------------" << std::endl;
+    std::cout << "Multiplying A & B: " << std::endl;
     std::cout << one*two << std::endl;      // print contraction
 
-    std::cout << "\n Transposing Vector B back:" << std::endl;
+    std::cout << "------------------------" << std::endl;
+    std::cout << "Transposing Vector B back:" << std::endl;
     two.T();
     two.Print();
 
     // add
-    std::cout << "\n Adding A & B: " << std::endl;
+    std::cout << "------------------------" << std::endl;
+    std::cout << "Adding A & B: " << std::endl;
     tensor three = one + two;
     three.Print();
     return 0;
