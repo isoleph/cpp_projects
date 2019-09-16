@@ -18,8 +18,8 @@ namespace entry {
         std::string plaintext; getline(std::cin, plaintext);
 
         std::vector<int> numtext;
-        for (char elem: plaintext) {
-            numtext.push_back(int(elem));       // convert char to int
+        for (int elem: plaintext) {
+            numtext.push_back(elem);
         }
         return numtext; 
     }
@@ -30,12 +30,11 @@ namespace entry {
         
         // only preserve alphabet position in numkey
         std::vector<int> numkey;
-        for (char elem: keytext) {
-            int num = int(elem);
-            if ('a' <= num && num <= 'z') {
-                numkey.push_back(num - 'a');
-            } else if ('A' <= num && num <= 'Z') {
-                numkey.push_back(num - 'A');
+        for (int elem: keytext) {
+            if ('a' <= elem && elem <= 'z') {
+                numkey.push_back(elem - 'a');
+            } else if ('A' <= elem && elem <= 'Z') {
+                numkey.push_back(elem - 'A');
             }
         }
         return numkey;                      // turn key into 0->25
