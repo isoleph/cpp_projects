@@ -78,5 +78,6 @@ Temporary Items
 ### vim ###
 .vim
 .vim/*
+*.swp
 
 # End of https://www.gitignore.io/api/macOS,c++,VisualStudioCode
