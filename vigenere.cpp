@@ -13,7 +13,7 @@
 
 namespace entry {
     // create a vector of numbers for message
-    std::vector<int> input_message() {
+    const std::vector<int> input_message() {
         std::cout << "Please enter message: ";
         std::string plaintext; getline(std::cin, plaintext);
 
@@ -24,7 +24,7 @@ namespace entry {
         return numtext; 
     }
     // create a vector of numbers from key
-    std::vector<int> input_key() {
+    const std::vector<int> input_key() {
         std::cout << "Now enter key: ";
         std::string keytext; getline(std::cin, keytext);
         
@@ -45,8 +45,8 @@ namespace entry {
 namespace xcrypt {
     // algorithm to encrypt message
     std::string encrypt() {
-        std::vector<int> input = entry::input_message();
-        std::vector<int> key = entry::input_key();
+        const std::vector<int> input = entry::input_message();
+        const  std::vector<int> key = entry::input_key();
         int kSz = key.size();
 
         std::string ciphertext;
@@ -69,11 +69,11 @@ namespace xcrypt {
     }
     // algorithm to decrypt message
     std::string decrypt() {
-        std::vector<int> input = entry::input_message();
-        std::vector<int> key = entry::input_key();
-        std::string plaintext;
+        const std::vector<int> input = entry::input_message();
+        const std::vector<int> key = entry::input_key();
         int kSz = key.size();
 
+        std::string plaintext;
         for (int i = 0; i < input.size(); i++) {
             // assign num as current int in message 
             int num = input[i];
