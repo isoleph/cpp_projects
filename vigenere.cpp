@@ -85,7 +85,7 @@ namespace xcrypt {
                     plaintext += char('z'+ ((num - 'a' + 1) - key[i%kSz]) % 26);
                 } 
                 else {
-                    plaintext += char(num - key[i % kSz]);  // if ascii# > key#
+                    plaintext += char(num - key[i % kSz]);     // if ascii# > key#
                 }
             }  
             // if num is uppercase
@@ -94,7 +94,7 @@ namespace xcrypt {
                     plaintext += char('Z'+ ((num - 'A' + 1) - key[i % kSz]) % 26);
                 } 
                 else {
-                    plaintext += char(num - key[i % kSz]);  // if ascii# > key#
+                    plaintext += char(num - key[i % kSz]);    // if ascii# > key#
                 }
             }
             else {
