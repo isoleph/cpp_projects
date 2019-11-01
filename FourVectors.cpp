@@ -1,3 +1,4 @@
+// g++ -std=c++17 -o fourvec.out FourVectors.cpp
 /****************************************************
 * Name: FourVectors.cpp                             *
 * Description: C++ module for Lorentz Four Vectors  *

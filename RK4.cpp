@@ -1,11 +1,10 @@
 // g++ -std=c++17 -o RK4 RK4.cpp
-
 /****************************************************
-* Name: RK4.cpp									*
+* Name: RK4.cpp									    *
 * Description: A script to solve ODEs using the     *
 *   Runge-Kutta Method                              *
 * Supports:                                         *
-*   - Stuff	                                        *
+*   - Single var integration                        *
 * Author: Angel A. Valdenegro                       *
 * TODO: More tests with different functions         *
 *****************************************************/ 

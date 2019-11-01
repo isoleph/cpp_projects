@@ -1,3 +1,4 @@
+// g++ -std=c++17 -o vigenere.out vigenere.cpp
 /****************************************************
 * Name: vigenere.cpp                                *
 * Description: C++ script to encrypt and decrypt    *
