@@ -32,7 +32,7 @@ def main():
     # set preferences
     plt.xlabel("x");
     plt.ylabel("y");
-    plt.title("Range-Kutta Solution of $y' = x^2$");
+    plt.title("Runge-Kutta Solution of $y' = x^2$");
     plt.legend();
 
     # show
