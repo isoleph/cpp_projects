@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns;
+
+sns.set();
+
+
+def main():
+    df = pd.read_csv("RK4.csv", header=0);
+    x = df.iloc[:, 0].tolist();
+    y = df.iloc[:, 1].tolist();
+
+    x2 = np.linspace(0, 5, 50);
+    y2 = 1 / 3 * x2**3;
+
+    fig = plt.figure();
+    ax = plt.axes();
+
+    line = ax.scatter(x, y, label=r"RK Solution of $\frac{1}{3} x^3$",
+                      linestyle="--", alpha=0.7, linewidth=0.5);
+    line2 = ax.scatter(x2, y2, label=r"Actual Solution of $\frac{1}{3} x^3$",
+                       alpha=0.7, linewidth=0.5);
+
+    plt.xlabel("x");
+    plt.ylabel("y");
+    plt.title("Range-Kutta Solution of $y' = x^2$");
+    plt.legend();
+
+    plt.grid(True);
+    plt.show();
+    return 0;
+
+
+main();

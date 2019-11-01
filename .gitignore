@@ -80,4 +80,7 @@ Temporary Items
 .vim/*
 *.swp
 
+### My DE ####
+.ccls
+
 # End of https://www.gitignore.io/api/macOS,c++,VisualStudioCode
