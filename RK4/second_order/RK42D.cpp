@@ -5,6 +5,7 @@
 *   using the Runge-Kutta Method                    *
 * Supports:                                         *
 *   - Single var integration                        *
+*   - Second-order solutions to a short range       *
 * Author: Angel A. Valdenegro                       *
 * TODO: More tests with different functions         *
 *****************************************************/ 
@@ -14,7 +15,6 @@
 #include <cmath>
 #include <vector>
 #include <functional>
-
 
 
 // create shorthand for types later 
@@ -115,9 +115,10 @@ class RK4 {
 };
 
 
+// create csv with numerical solution
 int main() {
     RK4 object;
-    vector results = object.iterator(0, 2*pi, 0, -1, 100, myFunction);
+    vector results = object.iterator(0, 2 * pi, 0, -1, 100, myFunction);
 
     std::ofstream outfile;
     outfile.open("RK42O.csv");

@@ -4,9 +4,8 @@
 * Description: A script to solve for derivatives at *
 *   a point using limits                            *
 * Supports:                                         *
-*   - Stuff	                                        *
+*   - First and Second Derivatives                  *
 * Author: Angel A. Valdenegro                       *
-* TODO: More tests with different functions         *
 *****************************************************/ 
 
 #include <iostream>
