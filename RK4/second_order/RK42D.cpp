@@ -1,6 +1,6 @@
 // g++ -std=c++17 -o RK42D RK42D.cpp
 /****************************************************
-* Name: RK4.cpp									    *
+* Name: RK42D.cpp									*
 * Description: A script to solve 2-order ODEs       * 
 *   using the Runge-Kutta Method                    *
 * Supports:                                         *
@@ -119,6 +119,7 @@ class RK4 {
 // create csv with numerical solution
 int main() {
     RK4 object;
+    // remember proper initial conditions!!
     vector results = object.iterator(0, 2 * pi, 0, 1, 500, myFunction);
 
     std::ofstream outfile;

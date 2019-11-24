@@ -13,7 +13,7 @@
 #include <functional>
 
 
-double myFunction(double x) {
+inline double myFunction(double x) {
     return sin(x);
 }
 
@@ -24,7 +24,7 @@ namespace dq {
         return (func(x + increment) - func(x))/(increment);
     }
 
-    // definition of the secodn derivative numerically
+    // definition of the second derivative numerically
     double secondDerivative(double x, std::function<double (double)> func) {
         constexpr const double increment = 0.00001;
         constexpr const double increment2 = 0.000000001;
