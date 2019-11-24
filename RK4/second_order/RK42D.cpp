@@ -1,11 +1,10 @@
 // g++ -std=c++17 -o RK42D RK42D.cpp
 /****************************************************
-* Name: RK4.cpp									    *
+* Name: RK42D.cpp									*
 * Description: A script to solve 2-order ODEs       * 
 *   using the Runge-Kutta Method                    *
 * Supports:                                         *
-*   - Single var integration                        *
-*   - Second-order solutions to a short range       *
+*   - Second-order solutions                        *
 * Author: Angel A. Valdenegro                       *
 * TODO: More tests with different functions         *
 *****************************************************/ 
@@ -24,50 +23,52 @@ typedef std::vector<double> vector;
 
 
 // test function
-double myFunction(double x, double y, double yd) {
-    return sin(x);
+inline double myFunction(double x, double y, double yd) {
+    return (-1 * y);
 }
 
 // R-K Class where the magic happens
 class RK4 {
     private: 
+
+        // Store RK4 numbers
         double k1n, k2n, k3n, k4n;          // First-Order Runge-Kutta Numbers
         double c1n, c2n, c3n, c4n;          // Define Second-Order Runge-Kutta Numbers
 
 
         //** Functions to calculate Second-Order RK Numbers **//
-        double c1 (double ydn, double h) {                                              // c1n
+        inline double c1 (double ydn, double h) {                                              // c1n
             c1n = ydn;
             return c1n;
         }
-        double c2 (double ydn, double h) {                                              // c2n
+        inline double c2 (double ydn, double h) {                                              // c2n
             c2n = ydn + 0.5 * h * k1n;
             return c2n;
         }
-        double c3 (double ydn, double h ) {                                             // c3n
+        inline double c3 (double ydn, double h ) {                                             // c3n
             c3n = ydn + 0.5 * h * k2n;
             return c3n;
         }
-        double c4 (double ydn, double h) {                                              // c4n
+        inline double c4 (double ydn, double h) {                                              // c4n
             c4n = ydn + h * k3n;
             return c4n;
         }
 
 
         //** Functions to calculate First-Order RK Numbers**//
-        double k1 (double t, double y, double ydn, double h, function func) {           // k1n
+        inline double k1 (double t, double y, double ydn, double h, function func) {           // k1n
             k1n = func(t, y, ydn);
             return k1n;
         }
-        double k2 (double t, double y, double ydn, double h, function func) {           // k2n
+        inline double k2 (double t, double y, double ydn, double h, function func) {           // k2n
             k2n = func(t + h/2, y + h/2 * c1(ydn, h), ydn);
             return k2n;
         }
-        double k3 (double t, double y, double ydn, double h, function func) {           // k3n
+        inline double k3 (double t, double y, double ydn, double h, function func) {           // k3n
             k3n = func(t + h/2, y + h/2 * c2(ydn, h), ydn);
             return k3n;
         }
-        double k4 (double t, double y, double ydn, double h, function func) {           // k4n
+        inline double k4 (double t, double y, double ydn, double h, function func) {           // k4n
             k4n = func(t + h, y + h * c3(ydn, h), ydn);
             return k4n;
         }
@@ -118,7 +119,8 @@ class RK4 {
 // create csv with numerical solution
 int main() {
     RK4 object;
-    vector results = object.iterator(0, 2 * pi, 0, -1, 100, myFunction);
+    // remember proper initial conditions!!
+    vector results = object.iterator(0, 2 * pi, 0, 1, 500, myFunction);
 
     std::ofstream outfile;
     outfile.open("RK42O.csv");
