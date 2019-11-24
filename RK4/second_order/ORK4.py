@@ -11,28 +11,27 @@ sns.set();
 
 def main():
     # create dataframe from C++ outfile
-    df = pd.read_csv("RK4a.csv", header=0);
+    df = pd.read_csv("RK42O.csv", header=0);
     x = df.iloc[:, 0].tolist();
     y = df.iloc[:, 1].tolist();
 
     # create numpy arrays to compare to
-    x2 = np.linspace(0, 5, 50);
-    y2 = -np.cos(x);
+    x2 = np.linspace(0, 2 * np.pi, 500);
+    y2 = np.sin(x);
 
     # create canvas
     fig = plt.figure();
     ax = plt.axes();
 
     # plot lines
-    line = ax.scatter(x, y, label=r"RK Solution of $-\cos(x)$",
-                      linestyle="--", alpha=0.7, linewidth=0.5);
-    line2 = ax.scatter(x2, y2, label=r"Actual Solution of $-\cos(x)$",
-                       alpha=0.7, linewidth=0.5);
+    line = ax.plot(x, y, label=r"RK Solution of $y '' = -y$")
+    line2 = ax.plot(x2, y2, label=r"Actual Solution of $y '' = -y$")
+                  
 
     # set preferences
     plt.xlabel("x");
     plt.ylabel("y");
-    plt.title("Runge-Kutta Integration of $y' = sin(x)$");
+    plt.title("Runge-Kutta Integration of $y'' = -y$");
     plt.legend();
 
     # show
